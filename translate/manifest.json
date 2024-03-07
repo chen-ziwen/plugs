@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "translate language",
+    "version": "1.0",
+    "description": "Base Level Extension",
+    "icons": {
+        "48": "icons/48.png"
+    },
+    "background": {
+        "server_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_title": "你可以点击我！！",
+        "default_icon": "icons/48.png"
+    }
+}
