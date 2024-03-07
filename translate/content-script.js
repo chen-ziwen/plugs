@@ -5,15 +5,25 @@ function translate(sl, tl, raw) {
     return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${raw}`)
         .then(res => res.json())
         .then(res => {
-            return res[0]?.[0]?.[0]
+            return res?.[0]?.[0]?.[0] || "";
         });
+}
+
+function insertAfter(newElement, targetElement) {
+    let parent = targetElement.parentNode;
+    if (parent.lastChild == targetElement) {
+        parent.appendChild(newElement);
+    } else {
+        parent.insertBefore(newElement, targetElement.nextSibling);
+    }
 }
 
 // 递归拿到所有的文本子节点 并翻译它
 function getChildNode(node, text) {
     if (node.nodeType == 3) {
         translate('en', 'zh-Hans', node.nodeValue).then((message) => {
-            node.nodeValue = message;
+            const btext = document.createTextNode(message);
+            insertAfter(btext, node);
         });
     } else if (node.nodeType == 1) {
         for (let i = 0; i < node.childNodes.length; i++) {

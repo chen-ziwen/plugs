@@ -12,6 +12,5 @@ chrome.action.onClicked.addListener((tab) => {
 chrome.commands.onCommand.addListener((command) => {
     if (command !== "open-tab") return;
     // 通过监听快捷键去跳转网站
-    // 可以ton过
     chrome.tabs.create({ url: "http://music.chiko.website" });
 });
