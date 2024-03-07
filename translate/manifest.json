@@ -7,11 +7,33 @@
         "48": "icons/48.png"
     },
     "background": {
-        "server_worker": "background.js"
+        "service_worker": "background.js"
     },
     "action": {
         "default_popup": "popup.html",
         "default_title": "你可以点击我！！",
         "default_icon": "icons/48.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "css": [
+                "my-styles.css"
+            ],
+            "js": [
+                "content-script.js"
+            ]
+        }
+    ],
+    "commands": {
+        "open-tab": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+Z",
+                "mac": "Command+Shift+Z"
+            },
+            "description": "Open developer.chrome.com"
+        }
     }
 }
