@@ -19,24 +19,35 @@ function insertAfter(newElement, targetElement) {
 }
 
 // 递归拿到所有的文本子节点 并翻译它
-function getChildNode(node, text) {
+function getChildNode(node) {
     if (node.nodeType == 3) {
         translate('en', 'zh-Hans', node.nodeValue).then((message) => {
-            const btext = document.createTextNode(message);
+            let btext = document.createTextNode(message);
             insertAfter(btext, node);
+            if (getTextWidthRatio(node) > 1 / 3) {
+                btext.parentNode.insertBefore(document.createElement('br'), btext);
+            }
         });
     } else if (node.nodeType == 1) {
         for (let i = 0; i < node.childNodes.length; i++) {
-            getChildNode(node.childNodes[i], text);
+            getChildNode(node.childNodes[i]);
         }
     }
 }
 
-// 这种写法只能针对ssr页面 对于spa单文件页面无法翻译
-// 除非能监听到网站的跳转 每次跳转都翻译下
-// 这个代码就是写着玩的 朋友想要这个效果 写个demo
-getChildNode(document.body);
+//获取文本宽度，宽度达到1/3翻译文本就换行
+function getTextWidthRatio(textNode) {
+    var parent = textNode.parentNode;
+    var span = document.createElement('span');
+    span.textContent = textNode.textContent;
+    parent.appendChild(span);
+    var textWidth = span.offsetWidth;
+    var parentWidth = parent.offsetWidth;
+    parent.removeChild(span);
+    return textWidth / parentWidth;
+}
 
+// 这种写法只能针对ssr页面 对于spa单文件页面无法翻译
 setTimeout(() => {
     getChildNode(document.body)
-}, 2000);
+}, 1000);
